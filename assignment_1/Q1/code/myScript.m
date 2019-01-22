@@ -75,7 +75,7 @@ base_pose = [
   [3,0,4]; % right elbow
   [1,0,4]; % right shoulder
   [-1,0,4]; % left shoulder
-  [-3,0,4]; % left elbos
+  [-3,0,4]; % left elbow
   [-5,0,4]; % left wrist
 ];
 
