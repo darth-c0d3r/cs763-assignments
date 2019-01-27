@@ -104,6 +104,7 @@ w = waitforbuttonpress;
 load('rot_angles.mat');
 rot_mat = angles2rot(rot_angles);
 result_pose = transformPose(rot_mat, base_pose(:,:), kinematic_chain, hip_idx);
+% disp(result_pose);
 plotPose(result_pose, kinematic_chain);
 w = waitforbuttonpress;
 
