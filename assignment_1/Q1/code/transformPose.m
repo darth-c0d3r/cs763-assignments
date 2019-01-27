@@ -1,29 +1,21 @@
-function [result_pose, composed_rot] = transformPose(rotations, pose, kinematic_chain, root_location)
+function [result_pose] = transformPose(rotations, pose, kinematic_chain, root_location)
     % rotations: A 15 x 3 x 3 array for rotation matrices of 15 bones
     % pose: The base pose coordinates 16 x 3.
     % kinematic chain: A 15 x 2 array of joint ordering
     % root_location: the index of the root in pose vector.
     % Your code here
-    n_parts = size(kinematic_chain,1);
-    n_joints = size(pose,1);
-    composed_rot = zeros(n_joints,3,3);
-    result_pose = zeros(n_joints,3);
-    composed_rot(root_location,:,:) = eye(3);
-    traversed = zeros(n_joints);
-    traversed(1) = root_location;
-    count = 1;
-    ptr = 1;
-    while count <= n_joints
-        cur_node = traversed(count);
-        result_pose(cur_node,:) = pose(cur_node,:)*squeeze(composed_rot(cur_node,:,:))';
-        for idx = 1:n_parts
-            if kinematic_chain(idx,2) == cur_node
-                ptr = ptr+1;
-                new_node = kinematic_chain(idx,1);
-                composed_rot(new_node,:,:) = squeeze(composed_rot(cur_node,:,:))*squeeze(rotations(idx,:,:));
-                traversed(ptr) = new_node;
-            end    
-        end    
-        count = count+1;
-    end    
+    [result_pose] = transformHelper(rotations, pose, kinematic_chain, root_location, eye(4));    
+end
+
+function [pose] = transformHelper(rotations, pose, kinematic_chain, root_location, composed_rot)
+    for idx = 1:size(kinematic_chain,1)
+        if kinematic_chain(idx,2) == root_location
+            child_node = kinematic_chain(idx,1);
+            M = [eye(3) pose(root_location,:)'; 0 0 0 1]*[squeeze(rotations(idx,:,:)) zeros(3,1); 0 0 0 1]*[eye(3) -pose(root_location,:)'; 0 0 0 1];
+            composed_rot1 = composed_rot*M;
+            [pose] = transformHelper(rotations, pose, kinematic_chain, child_node, composed_rot1);
+        end
+    end
+    X = composed_rot*[pose(root_location,:) 1]';
+    pose(root_location,:) = X(1:3)/X(4);
 end
