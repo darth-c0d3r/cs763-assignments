@@ -11,12 +11,12 @@
 ### Assignments
 
 <ol>
-	<ul>
+	<li><ul>
 		<li>Camera Geometry</li>
-	</ul>
-	<ul>
+	</ul></li>
+	<li><ul>
 		<li>Camera Calibration</li>
 		<li>Image Alignment</li>
 		<li>Robust Methods</li>
-	</ul>
+	</ul></li>
 </ol>
