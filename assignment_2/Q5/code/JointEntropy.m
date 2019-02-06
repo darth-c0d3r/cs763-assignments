@@ -1,14 +1,18 @@
-function H = JointEntropy(X,Y)
+function H = JointEntropy(Im1,Im2)
     
-    X = ceil(X/10);
-    Y = ceil(Y/10);
+    Im1 = ceil(Im1/10); % bins of 10
+    Im2 = ceil(Im2/10);
     
-    indrow = double(X(:)) + 1;
-    indcol = double(Y(:)) + 1; %// Should be the same size as indrow
-    jointHistogram = accumarray([indrow indcol], 1);
-    jointProb = jointHistogram / numel(indrow);
-    indNoZero = jointHistogram ~= 0;
-    jointProb1DNoZero = jointProb(indNoZero);
-    jointEntropy = -sum(jointProb1DNoZero.*log2(jointProb1DNoZero));
-    H = jointEntropy;
+     % Since intensity can be zero, but matlab array index starts with 1, doing + 1
+    Im1_int = double(Im1(:)) + 1;
+    Im2_int = double(Im2(:)) + 1; 
+    
+    jointHist = accumarray([Im1_int Im2_int], 1);
+    
+    jointProb = jointHist / numel(Im1_int);
+    
+    % Entries in jointHist which are non zero, i.e., intensity values occured in images
+    Exist_int = jointHist ~= 0;   
+    jointProb = jointProb(Exist_int);
+    H = -sum(jointProb.*log2(jointProb));
 end
