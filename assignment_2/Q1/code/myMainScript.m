@@ -5,7 +5,17 @@ X = [4 1 0 1 ;
      0 2 5 1 ;
      0 4 3 1 ;
      3 0 2 1 ;
-     2 0 6 1 ;]';
+     2 0 6 1 ;
+     1 1 0 1 ;
+     1 3 0 1 ;
+     4 3 0 1 ;
+     0 2 2 1 ;
+     0 2 7 1 ;
+     0 3 6 1 ;
+     1 0 4 1 ;
+     2 0 8 1 ;
+     4 0 6 1 ;
+     ]';
  
  %% Creating 2D Dataset [x]
  % Dimensions of X : n x 3 [n = 6]
@@ -20,7 +30,17 @@ X = [4 1 0 1 ;
       160 414 1 ;
       238 241 1 ;
       474 537 1 ;
-      272 636 1 ;]';
+      272 636 1 ;
+      389 418 1 ;
+      389 295 1 ;
+      585 307 1 ;
+      276 372 1 ;
+      043 450 1 ;
+      099 341 1 ;
+      276 555 1 ;
+      156 729 1 ;
+      454 676 1 ;
+      ]';
   
   T = normalizeCoordinates(x);
   U = normalizeCoordinates(X);
@@ -29,14 +49,20 @@ X = [4 1 0 1 ;
   X_ = U*X;
   
   P = EstimateProjection(x_, X_, T, U);
-  [K,R,X0] = DecomposeProjection(P);
+%   [K,R,X0] = DecomposeProjection(P);
   xx = P*X;
   xx = xx ./ xx(3,:);
   
-  diff = (xx-x_).^2;
+  diff = (xx-x).^2;
   RMSE = sqrt(mean(diff(:)));
   str = sprintf("RMSE = %f\n", RMSE);
   disp(str);
+  
+  disp(xx);
+  disp(x);
 
+  imshow('../input/checkerbox_3D_marked.png');
+  hold on;
+  plot(xx(1,:),xx(2,:),'ro');
   
   
