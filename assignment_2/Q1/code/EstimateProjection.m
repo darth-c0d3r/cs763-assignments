@@ -22,4 +22,5 @@ function P = EstimateProjection(x, X, T, U)
     P = reshape(p, 3,4);
 %     P = [p(1:4,:)'; p(5:8,:)'; p(9:12,:)'];
     P = (T\P) * U; % equivalent to inv(T) * P * U
+    P = P./P(3,4);
 end
