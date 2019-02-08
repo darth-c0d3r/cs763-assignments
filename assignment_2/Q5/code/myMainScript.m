@@ -11,8 +11,8 @@ imshow(img_out);
 
 imF1 = imread('../input/flash1.jpg');
 imM1 = imread('../input/noflash1.jpg');
-imF = rgb2gray(imF1);
-imM = rgb2gray(imM1);
+imF = rgb2gray(imF1); % convert to greyscale
+imM = rgb2gray(imM1); % convert to greyscale
 imM = MoveImage(imM);
 img_out = RegisterImage(imF, imM);
 figure
