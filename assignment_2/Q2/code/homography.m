@@ -1,6 +1,7 @@
 function [ H ] = homography( p1, p2 )
-%HOMOGRAPHY Summary of this function goes here
-%   Detailed explanation goes here
+% HOMOGRAPHY Computes 3X3 Homography matrix given set of points
+%   4 points are enough to compute homography. First, we reshape it into a vector, and then apply DLT.
+%	It turns out that the last column on applying SVD to the constructed matrix yields the desired result which minimizes error, which is acquired using the code below. 
     sz = size(p1,1);
     M = zeros(2*sz,9);
     for i = 1:sz
