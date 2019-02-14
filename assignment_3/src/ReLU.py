@@ -12,8 +12,8 @@ class ReLU:
 		self.output[< 0 ] = 0
 		return self.output
 
-	def backward(self, inp, gradOutput):
-		dLReLU = self.output
-		dLReLU[> 0] = 1
-		self.gradInput = gradOutput * dLReLU
+	def backward(self, inp, gradOutput, lr=None):
+		dReLU = self.output
+		dReLU[> 0] = 1
+		self.gradInput = gradOutput * dReLU
 		return self.gradInput

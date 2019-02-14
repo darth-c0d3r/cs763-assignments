@@ -13,7 +13,7 @@ class LeakyReLU:
 		self.output = torch.max(inp, alph_inp)
 		return self.output
 
-	def backward(self, inp, gradOutput):
+	def backward(self, inp, gradOutput, lr=None):
 		dLReLU = inp
 		dLReLU[> 0] = 1
 		dLReLU[< 0] = self.alpha
