@@ -2,8 +2,8 @@ import torch
 
 class LeakyReLU:
 
-	def __init__():
-		self.alpha = 0.01
+	def __init__(alpha):
+		self.alpha = alpha
 		self.output = None
 		self.gradInput = None
 	
