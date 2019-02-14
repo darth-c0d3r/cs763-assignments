@@ -14,9 +14,15 @@
 	<li><ul>
 		<li>Camera Geometry</li>
 	</ul></li>
+	<br>
 	<li><ul>
 		<li>Camera Calibration</li>
 		<li>Image Alignment</li>
 		<li>Robust Methods</li>
+	</ul></li>
+	<br>
+	<li><ul>
+		<li>Neural Networks</li>
+		<li>Back Propagation</li>
 	</ul></li>
 </ol>
