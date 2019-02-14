@@ -24,12 +24,12 @@ class Linear:
 		self.output.transpose_(0,1)
 		return self.output
 
-	def backward(self, input, gradOutput):
+	def backward(self, inp, gradOutput):
 		# input = n * j
 		# gradOutput = n * k
 
 		self.gradInput = torch.matmul(gradOutput, self.W)
-		self.gradW = torch.matmul(gradOutput.transpose(0,1), input)
+		self.gradW = torch.matmul(gradOutput.transpose(0,1), inp)
 		self.gradB = torch.sum(gradOutput, 0).reshape(-1, 1)
 
 		return self.gradInput
