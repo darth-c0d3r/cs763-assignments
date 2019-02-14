@@ -14,8 +14,8 @@ class LeakyReLU:
 		return self.output
 
 	def backward(self, inp, gradOutput):
-		DomByDon = self.output
-		DomByDon[> 0] = 1
-		DomByDon[< 0] = self.alpha
-		self.gradInput = gradOutput * DomByDon
+		dLReLU = inp
+		dLReLU[> 0] = 1
+		dLReLU[< 0] = self.alpha
+		self.gradInput = gradOutput * dLReLU
 		return self.gradInput
