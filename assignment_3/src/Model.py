@@ -7,6 +7,7 @@ class Model:
 		
 		self.Layers = list()
 		self.isTrain = None
+		self.lr = 0.1
 
 	def forward(self, inp):
 		out = inp
@@ -15,8 +16,10 @@ class Model:
 		return out
 
 
-	def backward(self, inp, gradOutput):
-		pass
+	def backward(self, activations, gradOutput):
+		gradInput = gradOutput
+		for i in range(len(self.Layers)-1,-1,-1):
+			gradInput = layer.backward(activations[i], gradInput, self.lr)
 
 	def dispGradParam(self):
 		pass

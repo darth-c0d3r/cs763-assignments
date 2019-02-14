@@ -2,7 +2,7 @@ import torch
 
 class ReLU:
 
-	def __init__():
+	def __init__(self):
 		self.output = None
 		self.gradInput = None
 	
@@ -13,7 +13,7 @@ class ReLU:
 		return self.output
 
 	def backward(self, inp, gradOutput):
-		DomByDon = self.output
-		DomByDon[> 0] = 1
-		self.gradInput = gradOutput * DomByDon
+		dLReLU = self.output
+		dLReLU[> 0] = 1
+		self.gradInput = gradOutput * dLReLU
 		return self.gradInput

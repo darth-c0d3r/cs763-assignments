@@ -1,6 +1,6 @@
 import torch
 
-class Criterion(object):
+class Criterion:
 
 	def forward(inp, target):
 		# input - n x d
