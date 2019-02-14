@@ -22,7 +22,6 @@ class Linear:
 		# input = n * j
 
 		self.output = torch.matmul(inp, self.W.transpose(0,1)) + self.gradB.transpose(0,1)
-		self.output.transpose_(0,1)
 		return self.output
 
 	def backward(self, inp, gradOutput, lr):

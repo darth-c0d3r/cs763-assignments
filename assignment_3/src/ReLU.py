@@ -9,11 +9,11 @@ class ReLU:
 	def forward(self, inp):
 		# if input = n x d
 		self.output = inp # torch.max(inp, torch.zeros(inp.size()).double())
-		self.output[< 0 ] = 0
+		self.output[self.output < 0] = 0
 		return self.output
 
 	def backward(self, inp, gradOutput, lr=None):
 		dReLU = self.output
-		dReLU[> 0] = 1
+		dReLU[dReLU > 0] = 1
 		self.gradInput = gradOutput * dReLU
 		return self.gradInput
