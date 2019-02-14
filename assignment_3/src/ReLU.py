@@ -2,7 +2,7 @@ import torch
 
 class ReLU:
 
-	def __init__():
+	def __init__(self):
 		self.output = None
 		self.gradInput = None
 	
