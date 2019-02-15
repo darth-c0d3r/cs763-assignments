@@ -34,6 +34,9 @@ class Model:
 		self.Layers.append(layer)
 		self.Layers[-1].set_optim(self.optim)
 
+	def setLearningRate(self, lr):
+		self.lr = lr
+
 	def set_device(self, device):
 		for layer in self.Layers:
 			layer.set_device(device)

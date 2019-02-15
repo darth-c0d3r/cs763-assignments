@@ -42,7 +42,6 @@ model.addLayer(ReLU())
 model.addLayer(Linear(256, 6))
 model.set_device(device)
 
-
 for epoch in range(epochs):
 
 	for i in range(int(math.ceil(train_data.shape[0]/batch_size))):
@@ -56,4 +55,5 @@ for epoch in range(epochs):
 
 		loss = CrossEntropy.forward(out, target)
 		model.backward(CrossEntropy.backward(out, target))
+		model.setLearningRate(lr)
 		print("Epoch = %d : Loss = %f : Accuracy = %d/%d" % (epoch, loss, accuracy, data.shape[0]))
