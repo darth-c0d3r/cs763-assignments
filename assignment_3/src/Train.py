@@ -33,7 +33,7 @@ epochs = 10
 lr = 0.1
 model = Model(lr)
 model.addLayer(Linear(784, 256))
-# model.addLayer(ReLU())
+model.addLayer(ReLU())
 model.addLayer(Linear(256, 10))
 
 for epoch in range(epochs):
