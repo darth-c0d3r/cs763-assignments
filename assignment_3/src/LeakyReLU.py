@@ -19,3 +19,6 @@ class LeakyReLU:
 		dLReLU[dLReLU < 0] = self.alpha
 		self.gradInput = gradOutput * dLReLU
 		return self.gradInput
+
+	def set_device(self, device):
+		pass

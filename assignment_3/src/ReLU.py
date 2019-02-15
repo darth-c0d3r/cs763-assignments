@@ -17,3 +17,6 @@ class ReLU:
 		dReLU[dReLU > 0] = 1
 		self.gradInput = gradOutput * dReLU
 		return self.gradInput
+
+	def set_device(self, device):
+		pass

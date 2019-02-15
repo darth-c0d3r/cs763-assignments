@@ -31,3 +31,7 @@ class Model:
 
 	def addLayer(self, layer):
 		self.Layers.append(layer)
+
+	def set_device(self, device):
+		for layer in self.Layers:
+			layer.set_device(device)

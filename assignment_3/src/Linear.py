@@ -11,8 +11,8 @@ class Linear:
 		self.W = torch.randn((output_neurons, input_neurons)).double() * 0.1 # k * j
 		self.B = torch.randn((output_neurons, 1)).double() * 0.1 # k * 1
 
-		self.gradW = torch.zeros((output_neurons, input_neurons)).double() # k * j
-		self.gradB = torch.zeros((output_neurons, 1)).double() # k * 1
+		self.gradW = None # k * j
+		self.gradB = None # k * 1
 
 		self.gradInput = None # n * j
 		self.output = None # n * k
@@ -21,7 +21,7 @@ class Linear:
 	def forward(self, inp):
 		# input = n * j
 
-		self.output = torch.matmul(inp, self.W.transpose(0,1)) + self.gradB.transpose(0,1)
+		self.output = torch.matmul(inp, self.W.transpose(0,1)) + self.B.transpose(0,1)
 		return self.output
 
 	def backward(self, inp, gradOutput, lr):
@@ -36,3 +36,7 @@ class Linear:
 		GradientDescent(self, lr)
 
 		return self.gradInput
+
+	def set_device(self, device):
+		self.W = self.W.to(device)
+		self.B = self.B.to(device)
