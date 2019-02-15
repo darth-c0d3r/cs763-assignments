@@ -3,6 +3,7 @@ import torch
 class ReLU:
 
 	def __init__(self):
+
 		self.output = None
 		self.gradInput = None
 	
@@ -19,4 +20,7 @@ class ReLU:
 		return self.gradInput
 
 	def set_device(self, device):
+		pass
+
+	def set_optim(self, optim):
 		pass

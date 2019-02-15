@@ -3,10 +3,11 @@ from ReLU import ReLU
 
 class Model:
 	
-	def __init__(self, lr):
+	def __init__(self, lr, optim):
 		
 		self.Layers = list()
 		self.isTrain = None
+		self.optim = optim
 		self.lr = lr
 		self.activations = list()
 
@@ -31,6 +32,7 @@ class Model:
 
 	def addLayer(self, layer):
 		self.Layers.append(layer)
+		self.Layers[-1].set_optim(self.optim)
 
 	def set_device(self, device):
 		for layer in self.Layers:

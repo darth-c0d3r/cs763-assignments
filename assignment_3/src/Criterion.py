@@ -5,6 +5,7 @@ class CrossEntropy:
 	def forward(inp, target):
 		# input - n x d
 		# target 1D tensor n
+		inp -= torch.mean(inp)
 		exps = torch.exp(inp)
 		sums = torch.sum(exps, 1)
 		# print("sums : %d", torch.sum(sums))
@@ -12,6 +13,7 @@ class CrossEntropy:
 		return loss
 
 	def backward(inp, target):
+		inp -= torch.mean(inp)
 		exps = torch.exp(inp)
 		sums = torch.sum(exps, 1).reshape(-1,1).repeat(1, inp.size(1))
 		grads = torch.div(exps, sums) 

@@ -22,3 +22,6 @@ class LeakyReLU:
 
 	def set_device(self, device):
 		pass
+
+	def set_optim(self, optim):
+		pass

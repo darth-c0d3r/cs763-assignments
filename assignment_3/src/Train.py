@@ -29,13 +29,15 @@ print("Validation Set Size: %d" % (val_data.shape[0]))
 print("Input Size: %d" % (train_data.shape[1]))
 
 batch_size = 500
-epochs = 10
+epochs = 20
 
-lr = 0.01
-model = Model(lr)
+lr = [0.9,0.001] # lr, friction
+model = Model(lr, "GradientDescentWithMomentum")
 model.addLayer(Linear(train_data.shape[1], 1024))
 model.addLayer(ReLU())
-model.addLayer(Linear(1024, 256))
+model.addLayer(Linear(1024, 512))
+model.addLayer(ReLU())
+model.addLayer(Linear(512, 256))
 model.addLayer(ReLU())
 model.addLayer(Linear(256, 6))
 model.set_device(device)
