@@ -7,12 +7,13 @@ class Dropout:
 		self.output = None
 		self.gradInput = None
 		self.isTrain = isTrain
+		self.device = None
 
 	def forward(self, inp):
 		self.output = inp
 		if (self.isTrain):
 			rand_vals = torch.rand((1, inp.shape[1])).double() # values in [0,1]
-			self.not_dropped = (rand_vals > self.dropout_rate).double()
+			self.not_dropped = ((rand_vals > self.dropout_rate).double()).to(self.device)
 			self.output *= self.not_dropped/self.dropout_rate
 		return self.output
 
@@ -23,7 +24,7 @@ class Dropout:
 		return self.gradInput
 
 	def set_device(self, device):
-		pass
+		self.device = device
 
 	def set_optim(self, optim):
 		pass

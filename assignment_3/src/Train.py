@@ -1,6 +1,7 @@
 import torch
 from Linear import Linear
 from ReLU import ReLU
+from Dropout import Dropout
 from Model import Model
 from Criterion import CrossEntropy
 import torchfile
@@ -35,10 +36,13 @@ lr = [0.9,0.001] # lr, friction
 model = Model(lr, "GradientDescentWithMomentum")
 model.addLayer(Linear(train_data.shape[1], 1024))
 model.addLayer(ReLU())
+model.addLayer(Dropout(0.0))
 model.addLayer(Linear(1024, 512))
 model.addLayer(ReLU())
+# model.addLayer(Dropout(0.3))
 model.addLayer(Linear(512, 256))
 model.addLayer(ReLU())
+# model.addLayer(Dropout(0.3))
 model.addLayer(Linear(256, 6))
 model.set_device(device)
 
