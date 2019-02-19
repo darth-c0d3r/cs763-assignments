@@ -17,16 +17,16 @@ input_data = normalize_data(input_data)
 train_data, train_labels, val_data, val_labels = split_data(input_data, input_labels)
 
 batch_size = 512
-epochs = 100
+epochs = 50
 
 # lr = [0.9,0.05] # lr, friction
 lr = [0.9, 0.005]
 model = Model(lr, "GradientDescentWithMomentum")
 model.addLayer(Linear(train_data.shape[1], 1024))
-model.addLayer(Dropout(0.3))
+model.addLayer(Dropout(0.4))
 model.addLayer(ReLU())
 model.addLayer(Linear(1024, 256))
-model.addLayer(Dropout(0.3))
+model.addLayer(Dropout(0.4))
 model.addLayer(ReLU())
 model.addLayer(Linear(256, 6))
 model.set_device(device)
@@ -62,7 +62,7 @@ for epoch in range(epochs):
 	accuracy = torch.sum(pred.reshape(-1) == val_labels.reshape(-1))
 	loss = CrossEntropy.forward(out, val_labels) / val_data.shape[0]
 
-	print("[V] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss, accuracy, 
+	print("[V] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss/val_data.shape[0], accuracy, 
 				val_data.shape[0], accuracy * 100.0 / val_data.shape[0] ))
 
 	print("")
