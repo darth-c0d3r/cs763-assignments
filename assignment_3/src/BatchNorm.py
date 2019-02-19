@@ -1,4 +1,5 @@
 import torch
+from Optimizer import *
 
 class BatchNorm1D:
 
@@ -59,6 +60,9 @@ class BatchNorm1D:
 
 		self.gradInput = self.W / torch.sqrt(self.currVar + 1e-7)
 		self.gradInput = self.gradInput.repeat(inp.shape[0],1)
+
+		self.gradW = torch.sum(self.gradW, 0).reshape(1,-1)
+		self.gradB = torch.sum(self.gradB, 0).reshape(1,-1)
 
 		if self.optim == "GradientDescent":
 			GradientDescent(self, lr)

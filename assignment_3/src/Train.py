@@ -2,6 +2,7 @@ import torch
 from Linear import Linear
 from ReLU import ReLU
 from Dropout import Dropout
+from BatchNorm import BatchNorm1D
 from Model import Model
 from Criterion import CrossEntropy
 import torchfile
@@ -32,17 +33,17 @@ print("Input Size: %d" % (train_data.shape[1]))
 batch_size = 500
 epochs = 20
 
-lr = [0.9,0.001] # lr, friction
+lr = [0.9,0.05] # lr, friction
 model = Model(lr, "GradientDescentWithMomentum")
 model.addLayer(Linear(train_data.shape[1], 1024))
+model.addLayer(BatchNorm1D(1024))
 model.addLayer(ReLU())
-model.addLayer(Dropout(0.0))
 model.addLayer(Linear(1024, 512))
+model.addLayer(BatchNorm1D(512))
 model.addLayer(ReLU())
-# model.addLayer(Dropout(0.3))
 model.addLayer(Linear(512, 256))
+model.addLayer(BatchNorm1D(256))
 model.addLayer(ReLU())
-# model.addLayer(Dropout(0.3))
 model.addLayer(Linear(256, 6))
 model.set_device(device)
 
