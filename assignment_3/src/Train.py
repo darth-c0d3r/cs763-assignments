@@ -38,6 +38,8 @@ for epoch in range(epochs):
 	num_correct = 0
 	num_runs = 0
 
+	train_data, train_labels = shuffle(train_data, train_labels)
+
 	for i in range(int(math.ceil(train_data.shape[0]/batch_size))):
 
 		data = train_data[batch_size*(i) : batch_size*(i+1), :]
@@ -62,7 +64,7 @@ for epoch in range(epochs):
 	out = model.forward(val_data)
 	pred = torch.max(out, 1)[1]
 	accuracy = torch.sum(pred.reshape(-1) == val_labels.reshape(-1))
-	loss = CrossEntropy.forward(out, val_labels) / val_data.shape[0]
+	loss = CrossEntropy.forward(out, val_labels)
 
 	print("[V] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss, accuracy, 
 				val_data.shape[0], accuracy * 100.0 / val_data.shape[0] ))
