@@ -21,7 +21,7 @@ epochs = 50
 
 # lr = [0.9,0.05] # lr, friction
 lr = [0.9, 0.005]
-model = Model(lr, "GradientDescentWithMomentum", 0.1)
+model = Model(lr, "GradientDescentWithMomentum", 0.001)
 model.addLayer(Linear(train_data.shape[1], 1024))
 model.addLayer(Dropout(0.4))
 model.addLayer(ReLU())
@@ -58,8 +58,8 @@ for epoch in range(epochs):
 		num_correct += accuracy
 		num_runs +=	1
 
-	print("[T] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss_total/num_runs, num_correct, 
-				num_samples, num_correct * 100.0 / num_samples ))
+	print("[T] Epoch = %d : Loss = %f : Accuracy = %d/%d (%f)" % (epoch, loss_total/num_runs, num_correct, 
+				num_samples, float(num_correct) * 100.0 / float(num_samples) ))
 
 	out = model.forward(val_data)
 	pred = torch.max(out, 1)[1]
@@ -67,7 +67,7 @@ for epoch in range(epochs):
 	loss = CrossEntropy.forward(out, val_labels)
 
 	print("[V] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss, accuracy, 
-				val_data.shape[0], accuracy * 100.0 / val_data.shape[0] ))
+				val_data.shape[0], float(accuracy) * 100.0 / float(val_data.shape[0])))
 
 	print("")
 
