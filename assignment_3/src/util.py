@@ -13,10 +13,16 @@ def get_device(cuda = 1):
 	print("Using Device:", device)
 	return device
 
-def get_data(data_folder, device):
+def augment_data(input_data):
+	return input_data
+
+def get_data(data_folder, device, augment=False):
 
 	input_data = torchfile.load(data_folder+"data.bin")
 	input_labels = torchfile.load(data_folder+"labels.bin")
+
+	if augment is True:
+		input_data = augment_data(input_data)
 
 	input_data = torch.tensor(input_data.reshape(input_data.shape[0],-1)).double().to(device)
 	input_labels = torch.tensor(input_labels.reshape(input_labels.shape[0],-1)).long().to(device)
