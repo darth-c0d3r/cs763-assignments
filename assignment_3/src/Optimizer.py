@@ -3,7 +3,7 @@ import torch
 def GradientDescent(layer, lr):
 	# len(lr) = 1
 	layer.W -= lr[0] * ( layer.gradW + 2*layer.weight_decay*layer.W)
-	layer.B -= lr[0] * ( layer.gradB + )
+	layer.B -= lr[0] * layer.gradB 
 
 def GradientDescentWithMomentum(layer, lr):
 	# len(lr) = 2
