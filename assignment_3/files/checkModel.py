@@ -28,18 +28,15 @@ device = torch.device("cuda" if torch.cuda.is_available() and cuda == 1 else "cp
 inp = torch.tensor(torchfile.load(options.input)).double().to(device)
 gradOutput = torch.tensor(torchfile.load(options.gradOutput))
 
-inp = inp / torch.max(inp)
-
 config = open(options.config, "r")
 lines = config.readlines()
 num_layers = int(lines[0])
-# print(inp.shape)
 batch_size = inp.shape[0]
+inp = inp.reshape(inp.shape[0],-1)
+# inp = inp/torch.max(inp)
 
-
-# epochs = 10
-lr = 0.01
-model = Model(lr)
+lr = 0.001
+model = Model(lr, "GradientDescent")
 
 for i in range(2*num_layers-1):
 	words = lines[i+1].split(' ')
@@ -48,14 +45,22 @@ for i in range(2*num_layers-1):
 	elif words[0] == 'relu':
 		model.addLayer(ReLU())
 model.set_device(device)
-# model.forward(inp)
-print(lines[2*num_layers][:-1])
-# W = torch.DoubleTensor(torchfile.load(lines[2*num_layers][:-1]))
-# B = torch.tensor(torchfile.load(lines[2*num_layers+1][:-1]))
+
 WL = torchfile.load(lines[2*num_layers][:-1])
 BL = torchfile.load(lines[2*num_layers+1][:-1])
+
+# print(len(model.Layers))
 for i in range(num_layers):
 	W = torch.DoubleTensor(WL[i])
 	B = torch.DoubleTensor(BL[i])
+	# print(model.Layers[i].W.shape)
+	# print(model.Layers[i].B.shape)
 	# print(W.shape)
 	# print(B.shape)
+	model.Layers[2*i].W = W
+	model.Layers[2*i].B = B.reshape(B.shape[0],1)
+
+out = torch.DoubleTensor(model.forward(inp))
+# ref_out = torch.tensor(torchfile.load(options.output)).double()
+# print(ref_out-out)
+# torch.save(out,options.output)
