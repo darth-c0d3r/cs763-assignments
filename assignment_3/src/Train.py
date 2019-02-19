@@ -12,16 +12,16 @@ from util import *
 device = get_device(1)
 
 data_folder = "../data/dataset/"
-input_data, input_labels = get_data(data_folder)
+input_data, input_labels = get_data(data_folder, device)
 input_data = normalize_data(input_data)
 train_data, train_labels, val_data, val_labels = split_data(input_data, input_labels)
 
 batch_size = 500
-epochs = 20
+epochs = 200
 
 # lr = [0.9,0.05] # lr, friction
-lr = [0.01]
-model = Model(lr, "GradientDescent")
+lr = [0.9, 0.01]
+model = Model(lr, "GradientDescentWithMomentum")
 model.addLayer(Linear(train_data.shape[1], 10))
 # model.addLayer(BatchNorm1D(1024))
 # model.addLayer(ReLU())

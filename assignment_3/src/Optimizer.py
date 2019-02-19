@@ -7,7 +7,11 @@ def GradientDescent(layer, lr):
 
 def GradientDescentWithMomentum(layer, lr):
 	# len(lr) = 2
-	layer.momW = lr[0]*layer.momW + lr[1]*layer.gradW
-	layer.momB = lr[0]*layer.momB + lr[1]*layer.gradB
+	if layer.momW is None:
+		layer.momW = lr[1] * layer.gradW
+		layer.momB = lr[1] * layer.gradB
+	else:
+		layer.momW = lr[0]*layer.momW + lr[1]*layer.gradW
+		layer.momB = lr[0]*layer.momB + lr[1]*layer.gradB
 	layer.W -= layer.momW
 	layer.B -= layer.momB

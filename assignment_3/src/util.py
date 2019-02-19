@@ -1,4 +1,5 @@
 import torch
+import torchfile
 
 def normalize_data(data):
 
@@ -11,7 +12,7 @@ def get_device(cuda = 1):
 	print("Using Device:", device)
 	return device
 
-def get_data(folder):
+def get_data(data_folder, device):
 
 	input_data = torchfile.load(data_folder+"train/data.bin")
 	input_labels = torchfile.load(data_folder+"train/labels.bin")
@@ -24,6 +25,10 @@ def get_data(folder):
 def split_data(input_data, input_labels):
 	train_data = input_data[:int(0.9 * input_data.shape[0]),:]
 	train_labels = input_labels[:int(0.9 * input_labels.shape[0]),:]
+
+	# train_data = input_data[:500,:]
+	# train_labels = input_labels[:500,:]
+
 	val_data = input_data[int(0.9 * input_data.shape[0]):,:]
 	val_labels = input_labels[int(0.9 * input_labels.shape[0]):,:]
 
