@@ -41,7 +41,7 @@ batch_size = inp.shape[0]
 lr = 0.01
 model = Model(lr)
 
-for i in range(num_layers):
+for i in range(2*num_layers-1):
 	words = lines[i+1].split(' ')
 	if words[0] == 'linear':
 		model.addLayer(Linear(int(words[1]),int(words[2])))
@@ -49,5 +49,13 @@ for i in range(num_layers):
 		model.addLayer(ReLU())
 model.set_device(device)
 # model.forward(inp)
-
-# torch.save('')
+print(lines[2*num_layers][:-1])
+# W = torch.DoubleTensor(torchfile.load(lines[2*num_layers][:-1]))
+# B = torch.tensor(torchfile.load(lines[2*num_layers+1][:-1]))
+WL = torchfile.load(lines[2*num_layers][:-1])
+BL = torchfile.load(lines[2*num_layers+1][:-1])
+for i in range(num_layers):
+	W = torch.DoubleTensor(WL[i])
+	B = torch.DoubleTensor(BL[i])
+	# print(W.shape)
+	# print(B.shape)
