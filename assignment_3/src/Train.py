@@ -11,27 +11,24 @@ from util import *
 
 device = get_device(1)
 
-data_folder = "../data/dataset/"
+data_folder = "../data/dataset/train/"
 input_data, input_labels = get_data(data_folder, device)
 input_data = normalize_data(input_data)
 train_data, train_labels, val_data, val_labels = split_data(input_data, input_labels)
 
-batch_size = 500
-epochs = 50
+batch_size = 512
+epochs = 100
 
 # lr = [0.9,0.05] # lr, friction
-lr = [0.9, 0.01]
+lr = [0.9, 0.005]
 model = Model(lr, "GradientDescentWithMomentum")
 model.addLayer(Linear(train_data.shape[1], 1024))
-# model.addLayer(BatchNorm1D(1024))
+model.addLayer(Dropout(0.3))
 model.addLayer(ReLU())
-model.addLayer(Linear(1024, 6))
-# model.addLayer(BatchNorm1D(512))
-# model.addLayer(ReLU())
-# model.addLayer(Linear(512, 256))
-# model.addLayer(BatchNorm1D(256))
-# model.addLayer(ReLU())
-# model.addLayer(Linear(256, 6))
+model.addLayer(Linear(1024, 256))
+model.addLayer(Dropout(0.3))
+model.addLayer(ReLU())
+model.addLayer(Linear(256, 6))
 model.set_device(device)
 
 for epoch in range(epochs):
@@ -57,15 +54,30 @@ for epoch in range(epochs):
 		num_samples += data.shape[0]
 		num_correct += accuracy
 
-	print("[T] Epoch = %d : Loss = %f : Accuracy = %d/%d (%f)" % (epoch, loss_total/num_samples, num_correct, 
+	print("[T] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss_total/num_samples, num_correct, 
 				num_samples, num_correct * 100.0 / num_samples ))
 
 	out = model.forward(val_data)
 	pred = torch.max(out, 1)[1]
 	accuracy = torch.sum(pred.reshape(-1) == val_labels.reshape(-1))
-	loss = CrossEntropy.forward(out, val_labels)
+	loss = CrossEntropy.forward(out, val_labels) / val_data.shape[0]
 
-	print("[V] Epoch = %d : Loss = %f : Accuracy = %d/%d (%f)" % (epoch, loss, accuracy, 
+	print("[V] Epoch = %d : Loss = %f : Accuracy = %d/%d (%.6f)" % (epoch, loss, accuracy, 
 				val_data.shape[0], accuracy * 100.0 / val_data.shape[0] ))
 
 	print("")
+
+
+device = get_device(0)
+model.set_device(device)
+test_data = torchfile.load("../data/dataset/test/test.bin")
+test_data = torch.tensor(test_data.reshape(test_data.shape[0],-1)).double().to(device)
+test_data = normalize_data(test_data)
+test_out  = model.forward(test_data)
+test_pred = torch.max(test_out, 1)[1].reshape(-1)
+
+
+with open("pred.csv", "w+") as file:
+	file.write("id,label\n\n")
+	for i in range(test_pred.shape[0]):
+		file.write("%d,%d\n"%(i,test_pred[i]))

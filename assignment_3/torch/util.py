@@ -14,8 +14,8 @@ def get_device(cuda = 1):
 
 def get_data(data_folder, device):
 
-	input_data = torchfile.load(data_folder+"data.bin")
-	input_labels = torchfile.load(data_folder+"labels.bin")
+	input_data = torchfile.load(data_folder+"train/data.bin")
+	input_labels = torchfile.load(data_folder+"train/labels.bin")
 
 	input_data = torch.tensor(input_data.reshape(input_data.shape[0],-1)).double().to(device)
 	input_labels = torch.tensor(input_labels.reshape(input_labels.shape[0],-1)).long().to(device)

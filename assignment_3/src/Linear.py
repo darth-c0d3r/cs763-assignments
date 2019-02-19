@@ -1,4 +1,5 @@
 import torch
+import math
 from Optimizer import *
 
 class Linear:
@@ -10,8 +11,8 @@ class Linear:
 		self.input_neurons = input_neurons
 		self.output_neurons = output_neurons
 
-		self.W = torch.randn((output_neurons, input_neurons)).double() * 0.1 # k * j
-		self.B = torch.randn((output_neurons, 1)).double() * 0.1 # k * 1
+		self.W = torch.randn((output_neurons, input_neurons)).double() / math.sqrt(input_neurons/2) # k * j
+		self.B = torch.randn((output_neurons, 1)).double() / math.sqrt(input_neurons/2) + 0.01# k * 1
 
 		self.gradW = None # k * j
 		self.gradB = None # k * 1
