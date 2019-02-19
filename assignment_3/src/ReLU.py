@@ -24,3 +24,6 @@ class ReLU:
 
 	def set_optim(self, optim):
 		pass
+
+	def set_wd(self, wd):
+		pass

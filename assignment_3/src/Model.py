@@ -3,12 +3,13 @@ from ReLU import ReLU
 
 class Model:
 	
-	def __init__(self, lr, optim):
+	def __init__(self, lr, optim, weight_decay=0.0):
 		
 		self.Layers = list()
 		self.isTrain = None
 		self.optim = optim
 		self.lr = lr
+		self.weight_decay = weight_decay
 		self.activations = list()
 
 	def forward(self, inp):
@@ -33,6 +34,7 @@ class Model:
 	def addLayer(self, layer):
 		self.Layers.append(layer)
 		self.Layers[-1].set_optim(self.optim)
+		self.Layers[-1].set_wd(self.weight_decay)
 
 	def setLearningRate(self, lr):
 		self.lr = lr
