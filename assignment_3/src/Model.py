@@ -29,7 +29,14 @@ class Model:
 		pass
 
 	def clearGradParam(self):
-		pass	
+		for layer in self.Layers:
+			if hasattr(layer, "W"):
+				layer.gradW = None
+				layer.gradB = None
+				layer.momW = None
+				layer.momB = None
+			layer.gradInput = None
+			layer.output = None
 
 	def addLayer(self, layer):
 		self.Layers.append(layer)

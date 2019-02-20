@@ -85,6 +85,8 @@ for epoch in range(epochs):
 
 	print("")
 
+model.clearGradParam()
+
 if args.modelName not in os.listdir():
 	os.mkdir(args.modelName)
 torch.save(model, args.modelName+"/model.bin")
