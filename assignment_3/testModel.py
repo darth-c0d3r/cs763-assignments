@@ -4,13 +4,14 @@ import torch
 import torchfile
 import argparse
 from Model import Model
+from util import *
 
 USAGE_STRING = """Arguments:\n(a) -i /path/to/input.bin\n(b) -t /path/to/target.bin\n(c) -ig /path/to/gradInput.bin""" 
 
 parser = argparse.ArgumentParser(USAGE_STRING)
 
 parser.add_argument("-modelName", "--modelName", help="Path to best Model")
-parser.add_argument("-data", "--dataPath", help="Path to test.bin")
+parser.add_argument("-data", "--data", help="Path to test.bin")
 
 args = parser.parse_args()
 
