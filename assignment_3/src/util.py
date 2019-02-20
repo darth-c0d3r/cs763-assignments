@@ -47,16 +47,19 @@ def augment_data(input_data, input_labels):
 	print("Augmentation Done")
 	return output_data, output_labels
 
-def get_data(data_path, label_path, device, augment=False):
+def get_data(data_path, label_path, device, augment=False, conv=True):
 
 	input_data = torchfile.load(data_path)
 	input_labels = torchfile.load(label_path)
-
 	if augment is True:
 		input_data, input_labels = augment_data(input_data, input_labels)
 
-	input_data = torch.tensor(input_data.reshape(input_data.shape[0],-1)).double().to(device)
-	input_labels = torch.tensor(input_labels.reshape(input_labels.shape[0],-1)).long().to(device)
+	if conv is False:
+		input_data = torch.tensor(input_data.reshape(input_data.shape[0],-1)).double().to(device)
+		input_labels = torch.tensor(input_labels.reshape(input_labels.shape[0],-1)).long().to(device)
+	else:
+		input_data = torch.tensor(input_data).double().to(device)
+		input_labels = torch.tensor(input_labels.reshape(input_labels.shape[0],-1)).long().to(device)
 
 	return input_data, input_labels
 
