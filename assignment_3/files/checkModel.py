@@ -67,8 +67,8 @@ gradB = list()
 for i in range(len(model.Layers)):
 	if not(hasattr(model.Layers[i],'gradW')):
 		continue
-	gradW.append(model.Layers[i].gradW.numpy())
-	gradB.append(model.Layers[i].gradB.reshape(-1).numpy())
+	gradW.append(model.Layers[i].gradW)
+	gradB.append(model.Layers[i].gradB.reshape(-1))
 
 torch.save(gradW,options.gradWeight)
 torch.save(gradB,options.gradB)
