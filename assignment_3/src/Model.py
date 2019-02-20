@@ -4,7 +4,6 @@ from ReLU import ReLU
 class Model:
 	
 	def __init__(self, lr, optim, weight_decay=0.0):
-		
 		self.Layers = list()
 		self.isTrain = None
 		self.optim = optim
@@ -24,6 +23,7 @@ class Model:
 		gradInput = gradOutput
 		for i in range(len(self.Layers)-1,-1,-1):
 			gradInput = self.Layers[i].backward(self.activations[i], gradInput, self.lr)
+		return gradInput
 
 	def dispGradParam(self):
 		pass

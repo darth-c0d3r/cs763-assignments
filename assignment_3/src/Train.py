@@ -38,6 +38,8 @@ for epoch in range(epochs):
 	num_correct = 0
 	num_runs = 0
 
+	train_data, train_labels = shuffle(train_data, train_labels)
+
 	for i in range(int(math.ceil(train_data.shape[0]/batch_size))):
 
 		data = train_data[batch_size*(i) : batch_size*(i+1), :]

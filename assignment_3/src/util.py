@@ -45,14 +45,12 @@ def split_data(input_data, input_labels):
 
 	return train_data, train_labels, val_data, val_labels
 
-def shuffle(data, labels, device):
+def shuffle(data, labels):
 	a = [i for i in range(data.shape[0])]
 	random.shuffle(a)
 
 	data_sh, labels_sh = data[a], labels[a]
 
-	# data1, labels1 = torch.zeros(data.shape).double().to(device), torch.zeros(labels.shape).long().to(device)
-	# for i in range(data.shape[0]):
-	# 	data1[i], labels1[i] = data[a[i]], labels[a[i]]
+	torch.cuda.empty_cache()
 
 	return data_sh, labels_sh
