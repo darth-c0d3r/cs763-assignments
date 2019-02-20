@@ -21,6 +21,7 @@ class Dropout:
 		self.gradInput = gradOutput
 		if (self.isTrain):
 			self.gradInput *= self.not_dropped/(1.0-self.dropout_rate)
+			self.not_dropped = None
 		return self.gradInput
 
 	def set_device(self, device):
