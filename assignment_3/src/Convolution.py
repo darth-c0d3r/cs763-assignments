@@ -38,8 +38,8 @@ class Linear:
 			for j in range(out_col):
 				data = inp[:,:, i*self.stride : i*self.stride+self.kernel_shape, j*self.stride : j*self.stride+self.kernel_shape]
 				data = data.reshape(inp.shape[0],-1)
-				kern = torch.transpose(self.W.reshape(self.output_channels,-1))
-				bias = torch.repeat(self.B.reshape(1,self.B.shape[0]), inp.shape[0], axis=0)
+				kern = self.W.reshape(self.output_channels,-1).transpose(0,1)
+				bias = self.B.reshape(1,self.B.shape[0]).repeat(inp.shape[0],1)
 				
 				self.output[:,:,i,j] = (torch.matmul(data,kern)+bias).reshape((inp.shape[0], self.output_channels))
 
@@ -62,9 +62,9 @@ class Linear:
 				j_range = j*self.stride,j*self.stride+self.kernel_shape
 				for d in range(self.output_channels):
 					gradInput[:,:,i_range,j_range] += gradOutput[:,d,i,j].reshape(inp.shape[0],1,1,1)*self.W[d].reshape(1,self.input_channels,self.kernel_shape,self.kernel_shape)
-					self.gradW[d] += torch.sum(gradOutput[:,d,i,j].reshape(inp.shape[0],1,1,1)*inp[:,:,i_range,j_range],axis=0)
+					self.gradW[d] += torch.sum(gradOutput[:,d,i,j].reshape(inp.shape[0],1,1,1)*inp[:,:,i_range,j_range],dim=0)
 
-		self.gradB = torch.sum(temp,axis=(0,2,3))
+		self.gradB = torch.sum(temp,dim=(0,2,3))
 
 		if self.optim == "GradientDescent":
 			GradientDescent(self, lr)
