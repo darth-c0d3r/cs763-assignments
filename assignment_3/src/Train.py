@@ -12,15 +12,15 @@ from util import *
 device = get_device(1)
 
 data_folder = "../data/dataset/train/"
-input_data, input_labels = get_data(data_folder, device)
+input_data, input_labels = get_data(data_folder, device, False)
 input_data = normalize_data(input_data)
 train_data, train_labels, val_data, val_labels = split_data(input_data, input_labels)
 
 batch_size = 512
-epochs = 50
+epochs = 60
 
 # lr = [0.9,0.05] # lr, friction
-lr = [0.9, 0.005]
+lr = [0.005, 0.9]
 model = Model(lr, "GradientDescentWithMomentum", 0.001)
 model.addLayer(Linear(train_data.shape[1], 1024))
 model.addLayer(Dropout(0.4))
@@ -38,7 +38,8 @@ for epoch in range(epochs):
 	num_correct = 0
 	num_runs = 0
 
-	train_data, train_labels = shuffle(train_data, train_labels)
+	if (epoch + 1) % 15 == 0:
+		lr[0] /= 4.0
 
 	for i in range(int(math.ceil(train_data.shape[0]/batch_size))):
 
