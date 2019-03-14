@@ -25,4 +25,8 @@
 		<li>Neural Networks</li>
 		<li>Back Propagation</li>
 	</ul></li>
+	<br>
+	<li><ul>
+		<li>Recurrent Neural Networks</li>
+	</ul></li>
 </ol>
