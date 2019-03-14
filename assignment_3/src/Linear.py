@@ -23,6 +23,8 @@ class Linear:
 		self.gradInput = None # n * j
 		self.output = None # n * k
 
+		self.name = "linear %d %d\n" % (input_neurons, output_neurons)
+
 
 	def forward(self, inp):
 		# input = n * j

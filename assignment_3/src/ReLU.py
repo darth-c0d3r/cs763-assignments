@@ -6,7 +6,9 @@ class ReLU:
 
 		self.output = None
 		self.gradInput = None
-	
+		
+		self.name = "relu\n"
+
 	def forward(self, inp):
 		# if input = n x d
 		self.output = inp # torch.max(inp, torch.zeros(inp.size()).double())
