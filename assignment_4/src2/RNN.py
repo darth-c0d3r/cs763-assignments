@@ -3,7 +3,10 @@ from Tanh import Tanh
 
 class RNN:
 
-	def __init__(self, input_dim, hidden_dim, output_dim):
+	def __init__(self, input_dim, hidden_dim, output_dim, device):
+
+		self.device = device
+
 		self.input_dim = input_dim
 		self.hidden_dim = hidden_dim
 		self.output_dim = output_dim
@@ -14,11 +17,11 @@ class RNN:
 		self.Bhh = self.init_weights((hidden_dim))
 		self.Bhy = self.init_weights((output_dim))
 
-		self.dWxh = torch.zeros(self.Wxh.shape)
-		self.dWhh = torch.zeros(self.Whh.shape)
-		self.dWhy = torch.zeros(self.Why.shape)
-		self.dBhh = torch.zeros(self.Bhh.shape)
-		self.dBhy = torch.zeros(self.Bhy.shape)
+		self.dWxh = torch.zeros(self.Wxh.shape).to(self.device)
+		self.dWhh = torch.zeros(self.Whh.shape).to(self.device)
+		self.dWhy = torch.zeros(self.Why.shape).to(self.device)
+		self.dBhh = torch.zeros(self.Bhh.shape).to(self.device)
+		self.dBhy = torch.zeros(self.Bhy.shape).to(self.device)
 
 		self.h_t = None	# list of input from left cell (including output from rightmost cell) 
 		self.y_t = None # list of output to above layer
@@ -71,7 +74,12 @@ class RNN:
 
 		return self.grad_xt
 
-# TODO: Add clear_all to avoid exploding gradients
-
 	def init_weights(self, dim):
-		return torch.randn(dim)
+		return (torch.randn(dim) * 0.01).to(self.device)
+
+	def clear_grads(self):
+		self.dWxh = torch.zeros(self.Wxh.shape).to(self.device)
+		self.dWhh = torch.zeros(self.Whh.shape).to(self.device)
+		self.dWhy = torch.zeros(self.Why.shape).to(self.device)
+		self.dBhh = torch.zeros(self.Bhh.shape).to(self.device)
+		self.dBhy = torch.zeros(self.Bhy.shape).to(self.device)
