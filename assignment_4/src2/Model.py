@@ -17,12 +17,10 @@ class Model:
 			self.layers.append(RNN(fc[i], fc[i+1], fc[i+2],self.device))		
 
 		self.outputs = None
-		self.timesteps = None
 
 
 	def forward(self, data):
 		data_ = data
-		self.timesteps = data.shape[1]
 		for i in range(self.num_layers):
 			data_ = self.layers[i].forward(data_)
 

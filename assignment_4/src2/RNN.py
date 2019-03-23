@@ -31,6 +31,8 @@ class RNN:
 
 		self.timesteps = None
 
+		self.MIN = -1000
+		self.MAX = 1000
 
 	def forward(self, data):
 		self.timesteps = data.shape[1]
@@ -52,16 +54,16 @@ class RNN:
 		self.grad_xt = torch.zeros(self.x_t.shape)
 		
 		
-		for time in range(self.timesteps-1,-1,-1):
-			self.dWhy += torch.matmul(self.h_t[:,time+1,:].transpose(0,1), grad_yt[:,time,:])
-			self.dBhy += torch.sum(grad_yt[:,self.timesteps-1,:], dim=0)
+		for time in range(self.timesteps-1,self.timesteps-10,-1):
+			self.dWhy = torch.clamp(self.dWhy + torch.matmul(self.h_t[:,time+1,:].transpose(0,1), grad_yt[:,time,:]), self.MIN, self.MAX)
+			self.dBhy = torch.clamp(self.dBhy + torch.sum(grad_yt[:,self.timesteps-1,:], dim=0), self.MIN, self.MAX)
 
 			dE_dht = torch.matmul(grad_yt[:,time,:], self.Why.transpose(0,1)) + self.grad_ht[:,time+1,:]
 			act_back = torch.mul(dE_dht, Tanh.backward(self.h_t[:,time+1,:]))
 
-			self.dWhh += torch.matmul(self.h_t[:,time,:].transpose(0,1), act_back)
-			self.dWxh += torch.matmul(self.x_t[:,time,:].transpose(0,1), act_back)
-			self.dBhh += torch.sum(act_back, dim=0)
+			self.dWhh = torch.clamp(self.dWhh + torch.matmul(self.h_t[:,time,:].transpose(0,1), act_back), self.MIN, self.MAX)
+			self.dWxh = torch.clamp(self.dWxh + torch.matmul(self.x_t[:,time,:].transpose(0,1), act_back), self.MIN, self.MAX)
+			self.dBhh = torch.clamp(self.dBhh + torch.sum(act_back, dim=0), self.MIN, self.MAX)
 
 			self.grad_xt[:,time,:] = torch.matmul(act_back, self.Wxh.transpose(0,1))
 			self.grad_ht[:,time,:] = torch.matmul(act_back, self.Whh.transpose(0,1))

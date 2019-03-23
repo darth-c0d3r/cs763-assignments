@@ -4,18 +4,19 @@ from RNN import RNN
 from Criterion import CrossEntropy
 
 EPOCHS = 20
-lr = 1e-2
+lr = 1e-1
+BATCH_SIZE = 5
 
 device = get_device(0)
 
-train_dataset = Dataset("../data/train_data.txt",5,device)
-train_labels = Dataset("../data/train_labels.txt",5,device,target=True)
+train_dataset = Dataset("../data/train_data.txt",BATCH_SIZE,device)
+train_labels = Dataset("../data/train_labels.txt",BATCH_SIZE,device,target=True)
 test_dataset = Dataset("../data/test_data.txt",1,device)
 train_dataset.print_details()
 
 # print(train_dataset.get_batch(0).shape)
 
-model = Model(1, 64, train_dataset.input_dim, 2)
+model = Model(1, 16, train_dataset.input_dim, 2, device)
 criterion = CrossEntropy()
 
 for epoch in range(1,EPOCHS+1):
@@ -42,5 +43,6 @@ for epoch in range(1,EPOCHS+1):
 		grad[:,-1,:] = grad_out
 		
 		model.backward(grad, lr)
+		model.clear_grads()
 
 	print("Epoch %d : Loss : %f : Correct : %d/%d (%f)" % (epoch, loss, correct, train_dataset.size, float(correct)/float(train_dataset.size)))
