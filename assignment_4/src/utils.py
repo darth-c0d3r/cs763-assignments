@@ -2,6 +2,12 @@ import torch
 import numpy as np
 import random
 
+def get_device(cuda = 1):
+	device = torch.device("cuda" if torch.cuda.is_available() and cuda == 1 else "cpu")
+	print("Using Device:", device)
+	return device
+
+
 def get_data(data, max_len=None):
 	if max_len is None:
 		max_len = max([len(row) for row in data])
@@ -25,7 +31,6 @@ def get_unique():
 
 def one_hot_encode(X, unq):
 
-	print(len(unq))
 	N, D = X.shape
 	X_new =  torch.zeros((N, D, len(unq)))
 	for i in range(N):
@@ -46,8 +51,9 @@ def read_tensor(filename):
 
 class Dataset:
 
-	def __init__(self, filename, batch_size, target=False):
+	def __init__(self, filename, batch_size, device, target=False):
 
+		self.device = device
 		self.unq = get_unique()
 		self.target = target
 		self.data = None
@@ -58,19 +64,31 @@ class Dataset:
 
 		self.batch_size = batch_size
 		self.size = len(self.data)
-		self.num_batches = int(np.ceil(self.size / self.batch_size))
+		self.input_dim = len(self.unq)
+
+		self.train_size = int(self.size*0.7)
+		self.val_size = self.size - self.train_size
+
+		self.num_batches = int(np.ceil(self.train_size / self.batch_size))
+
+	def get_eval(self):
+		if self.target:
+			return torch.tensor(get_data(self.data[self.train_size+1:])).to(self.device)
+		else:
+			return one_hot_encode(get_data(self.data[self.train_size+1:]), self.unq).to(self.device)
 
 	def shuffle(self):
 		random.shuffle(self.data)
 
 	def get_batch(self, batch_idx):
+		st, en = (batch_idx*self.batch_size), min(((batch_idx+1)*self.batch_size), self.train_size+1)
 		if self.target:
-			return torch.tensor(get_data(self.data[(batch_idx*self.batch_size):((batch_idx+1)*self.batch_size)]))
+			return torch.tensor(get_data(self.data[st:en])).to(self.device)
 		else:
-			return one_hot_encode(get_data(self.data[(batch_idx*self.batch_size):((batch_idx+1)*self.batch_size)]), self.unq)
+			return one_hot_encode(get_data(self.data[st:en]), self.unq).to(self.device)
 
-	# def preprocess(self, data):
-	# 	flat_list = [item for sublist in data for item in sublist]
-	# 	unq = np.unique(flat_list)
-	# 	print(unq.shape)
-		
+	def print_details(self):
+		print("Dataset Size: %d"%(self.size))
+		print("Batch Size: %d"%(self.batch_size))
+		print("Number of Batches: %d"%(self.num_batches))
+		print("Input Dim: %d"%(self.input_dim))
