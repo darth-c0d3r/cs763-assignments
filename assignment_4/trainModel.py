@@ -4,7 +4,7 @@ import argparse
 import torch
 import torchfile
 sys.path.append('./src')
-from train import *
+from Train import *
 from utils import *
 from Tanh import *
 

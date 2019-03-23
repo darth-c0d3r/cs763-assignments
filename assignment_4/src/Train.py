@@ -3,9 +3,9 @@ from Model import Model
 from RNN import RNN
 from Criterion import CrossEntropy
 
-EPOCHS = 24
-lr = 3e-2
-BATCH_SIZE = 5
+EPOCHS = 30
+lr = [1e-1, 3e-2, 1e-2, 3e-3, 1e-3, 3e-4]
+BATCH_SIZE = 2
 
 device = get_device(0)
 
@@ -44,19 +44,20 @@ def train():
 			grad_out = criterion.backward(out_rnn, target)
 			grad[:,-1,:] = grad_out
 			
-			model.backward(grad, lr)
+			model.backward(grad, lr[(epoch-1)//6])
 			model.clear_grads()
 
-		print("Epoch %d : Loss : %f : Correct : %d/%d (%f)" %
+		print("Train %d : Loss : %f : Accuracy : %d/%d (%f)" %
 			(epoch, loss/train_dataset.train_size, correct, train_dataset.train_size, float(correct)/float(train_dataset.train_size))
 		)
 
 		val_out = model.forward(val_data)[:,-1,:]
 		val_pred = torch.argmax(val_out,1).reshape(-1,1)
 		val_correct = torch.sum(torch.eq(val_pred, val_target)).detach().item()
+		val_loss = criterion.forward(val_out, val_target).detach().item()
 
-		print("Epoch %d : Val Accuracy: %d/%d (%f)" % 
-			(epoch, val_correct, train_dataset.val_size, float(val_correct)/train_dataset.val_size)
+		print("Eval  %d : Loss : %f : Accuracy : %d/%d (%f)" % 
+			(epoch, val_loss/train_dataset.val_size, val_correct, train_dataset.val_size, float(val_correct)/train_dataset.val_size)
 		)
 
 	return model
