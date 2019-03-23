@@ -15,8 +15,8 @@ def get_data(data, max_len=None):
 	return data
 
 def get_unique():
-	f1 = "../data/train_data.txt"
-	f2 =  "../data/test_data.txt"
+	f1 = "./data/train_data.txt"
+	f2 =  "./data/test_data.txt"
 	with open(f1, 'r') as file:
 		f1 = [[int(val) for val in row.split()] for row in file.readlines()]
 	with open(f2, 'r') as file:

@@ -85,3 +85,18 @@ class RNN:
 		self.dWhy = torch.zeros(self.Why.shape).to(self.device)
 		self.dBhh = torch.zeros(self.Bhh.shape).to(self.device)
 		self.dBhy = torch.zeros(self.Bhy.shape).to(self.device)
+	
+	def make_empty(self):
+		self.dWxh = None
+		self.dWhh = None
+		self.dWhy = None
+		self.dBhh = None
+		self.dBhy = None
+
+		self.h_t = None
+		self.y_t = None
+		self.x_t = None
+		self.grad_ht = None
+		self.grad_xt = None
+
+		self.timesteps = None

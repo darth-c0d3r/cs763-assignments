@@ -16,8 +16,6 @@ class Model:
 		for i in range(self.num_layers):
 			self.layers.append(RNN(fc[i], fc[i+1], fc[i+2],self.device))		
 
-		self.outputs = None
-
 
 	def forward(self, data):
 		data_ = data
@@ -34,3 +32,7 @@ class Model:
 	def clear_grads(self):
 		for layer in self.layers:
 			layer.clear_grads()
+	
+	def make_empty(self):
+		for layer in self.layers:
+			layer.make_empty()
