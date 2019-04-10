@@ -29,4 +29,9 @@
 	<li><ul>
 		<li>Recurrent Neural Networks</li>
 	</ul></li>
+	<br>
+	<li><ul>
+		<li>Lucas-Kande Tracker</li>
+		<li>Video Stabilization</li>
+	</ul></li>
 </ol>
